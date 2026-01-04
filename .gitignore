@@ -10,3 +10,5 @@
 !*.psd1
 !*.tpl
 !template.json
+!test.http
+!readme.txt

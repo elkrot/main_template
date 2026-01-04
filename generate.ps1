@@ -14,7 +14,9 @@ Get-ChildItem $TemplateRoot -Recurse  -File |
 		$_.Name -like '*.cshtml.tpl' -or
 		$_.Name -like '*.cshtml.tpl' -or
 		$_.Name -like 'app.css.tpl' -or
-        $_.Name -like 'appsettings.json.tpl'
+        $_.Name -like 'appsettings.json.tpl'-or
+        $_.Name -like 'test.http'
+		
     } | ForEach-Object {
 
     # относительный путь
@@ -41,5 +43,5 @@ Get-ChildItem $TemplateRoot -Recurse  -File |
 foreach ($key in $replacements.Keys) {
     $content = $content -replace "\{\{$key\}\}", $replacements[$key]
 }
-    Set-Content -Path $targetPath -Value $content -Encoding UTF8
+    Set-Content -Path $targetPath -Value $content #-Encoding UTF8
 }

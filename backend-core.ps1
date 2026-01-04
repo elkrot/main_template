@@ -53,22 +53,22 @@ New-Item -ItemType Directory -Path "Presentation\$($SolutionName).WebApi\Service
 
 dotnet add "Infrastructure\$($SolutionName).Persistence\$($SolutionName).Persistence.csproj" package --framework $framework Microsoft.EntityFrameworkCore.Sqlite
 
-dotnet add "Core\$($SolutionName).Application\$($SolutionName).Application.csproj" package AutoMapper --version 12.0.1
-dotnet add "Core\$($SolutionName).Application\$($SolutionName).Application.csproj" package --framework $framework FluentValidation
-dotnet add "Core\$($SolutionName).Application\$($SolutionName).Application.csproj" package --framework $framework FluentValidation.DependencyInjectionExtensions
-dotnet add "Core\$($SolutionName).Application\$($SolutionName).Application.csproj" package MediatR --version 11.1.0
-dotnet add "Core\$($SolutionName).Application\$($SolutionName).Application.csproj" package MediatR.Extensions.Microsoft.DependencyInjection --version 11.1.0
-dotnet add "Core\$($SolutionName).Application\$($SolutionName).Application.csproj" package --framework $framework    Microsoft.EntityFrameworkCore
-dotnet add "Core\$($SolutionName).Application\$($SolutionName).Application.csproj" package --framework $framework    Serilog
-dotnet add "Core\$($SolutionName).Application\$($SolutionName).Application.csproj" package --framework $framework    Serilog.Sinks.File
+dotnet add "Core\$($SolutionName).Application\$($SolutionName).Application.csproj" package AutoMapper --version 12.0.1  --no-restore
+dotnet add "Core\$($SolutionName).Application\$($SolutionName).Application.csproj" package --framework $framework FluentValidation --no-restore --no-restore
+dotnet add "Core\$($SolutionName).Application\$($SolutionName).Application.csproj" package --framework $framework FluentValidation.DependencyInjectionExtensions --no-restore
+dotnet add "Core\$($SolutionName).Application\$($SolutionName).Application.csproj" package MediatR --version 11.1.0 --no-restore
+dotnet add "Core\$($SolutionName).Application\$($SolutionName).Application.csproj" package MediatR.Extensions.Microsoft.DependencyInjection --version 11.1.0 --no-restore
+dotnet add "Core\$($SolutionName).Application\$($SolutionName).Application.csproj" package --framework $framework    Microsoft.EntityFrameworkCore --no-restore
+dotnet add "Core\$($SolutionName).Application\$($SolutionName).Application.csproj" package --framework $framework    Serilog --no-restore
+dotnet add "Core\$($SolutionName).Application\$($SolutionName).Application.csproj" package --framework $framework    Serilog.Sinks.File --no-restore
 
 
-dotnet add "Presentation\$($SolutionName).WebApi\$($SolutionName).WebApi.csproj" package AutoMapper.Extensions.Microsoft.DependencyInjection  --version 12.0.1
-dotnet add "Presentation\$($SolutionName).WebApi\$($SolutionName).WebApi.csproj" package Microsoft.AspNetCore.Authentication.JwtBearer  --version 8.0.1
-dotnet add "Presentation\$($SolutionName).WebApi\$($SolutionName).WebApi.csproj" package --framework $framework Microsoft.AspNetCore.Mvc.Versioning
-dotnet add "Presentation\$($SolutionName).WebApi\$($SolutionName).WebApi.csproj" package --framework $framework Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer
-dotnet add "Presentation\$($SolutionName).WebApi\$($SolutionName).WebApi.csproj" package --framework $framework Serilog.AspNetCore
-dotnet add "Presentation\$($SolutionName).WebApi\$($SolutionName).WebApi.csproj" package --framework $framework Swashbuckle.AspNetCore
+dotnet add "Presentation\$($SolutionName).WebApi\$($SolutionName).WebApi.csproj" package AutoMapper.Extensions.Microsoft.DependencyInjection  --version 12.0.1 --no-restore
+dotnet add "Presentation\$($SolutionName).WebApi\$($SolutionName).WebApi.csproj" package Microsoft.AspNetCore.Authentication.JwtBearer  --version 8.0.1 --no-restore
+dotnet add "Presentation\$($SolutionName).WebApi\$($SolutionName).WebApi.csproj" package --framework $framework Microsoft.AspNetCore.Mvc.Versioning --no-restore
+dotnet add "Presentation\$($SolutionName).WebApi\$($SolutionName).WebApi.csproj" package --framework $framework Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer --no-restore
+dotnet add "Presentation\$($SolutionName).WebApi\$($SolutionName).WebApi.csproj" package --framework $framework Serilog.AspNetCore --no-restore
+dotnet add "Presentation\$($SolutionName).WebApi\$($SolutionName).WebApi.csproj" package --framework $framework Swashbuckle.AspNetCore --no-restore
 
 $models=  @(
    [PSCustomObject]@{

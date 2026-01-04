@@ -1,19 +1,11 @@
-using System.ComponentModel.DataAnnotations;
-
-namespace $($identitySolutionName).Models
+namespace {{Namespace}}.Models
 {
     public class ApplicationViewModel
-{
-	[Required]
-    public string? ClientId { get; set; }
-    public string? DisplayName { get; set; }
-    [Required]
-    [DataType(DataType.Password)]
-    public string? ClientSecret { get; set; }
-    public List<string> RedirectUris { get; set; } = new();
-    public List<string> PostLogoutRedirectUris { get; set; } = new();
-    public List<string> Permissions { get; set; } = new();
-    public List<string> Requirements { get; set; } = new();
-}
-
+    {
+        public string Id { get; set; }
+        public string ClientId { get; set; }
+        public string DisplayName { get; set; }
+        public string Type { get; set; }
+        public string RedirectUris { get; set; }
+    }
 }

@@ -1,8 +1,0 @@
-{
-  "$schema": "http://json.schemastore.org/template",
-  "identity": "My.Identity.Template",
-  "name": "Identity Service",
-  "shortName": "identity",
-  "sourceName": "Template.Identity",
-  "preferNameDirectory": true
-}

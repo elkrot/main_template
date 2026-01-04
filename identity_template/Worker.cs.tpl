@@ -1,8 +1,9 @@
-using $($identitySolutionName).Data;
+using Microsoft.AspNetCore.Identity; // Важно: добавить этот using
 using OpenIddict.Abstractions;
-using static OpenIddict.Abstractions.OpenIddictConstants;
+using {{Namespace}}.Data;
+using OpenIddict.Abstractions;
 
-namespace $($identitySolutionName);
+namespace {{Namespace}};
 
 public class Worker : IHostedService
 {
@@ -13,48 +14,57 @@ public class Worker : IHostedService
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {
-        await using var scope = _serviceProvider.CreateAsyncScope();
+        using var scope = _serviceProvider.CreateScope();
 
-        var context = scope.ServiceProvider.GetRequiredService<AuthDbContext>();
-        await context.Database.EnsureCreatedAsync();
+        // 1. Инициализация Базы Данных
+        var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        await context.Database.EnsureCreatedAsync(cancellationToken);
 
+        // 2. Создание Администратора (НОВОЕ)
+        var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+        
+        const string adminEmail = "admin@admin.com";
+        const string adminPassword = "Password123!"; // Пароль должен быть сложным (Identity по умолчанию требует: Цифру, Букву, Заглавную, Спецсимвол)
+
+        var adminUser = await userManager.FindByEmailAsync(adminEmail);
+        
+        if (adminUser is null)
+        {
+            var user = new IdentityUser
+            {
+                UserName = adminEmail,
+                Email = adminEmail,
+                EmailConfirmed = true // Сразу подтверждаем email, чтобы можно было войти
+            };
+
+            var result = await userManager.CreateAsync(user, adminPassword);
+            
+            if (!result.Succeeded)
+            {
+                // Логирование ошибки, если не удалось создать (например, пароль слишком простой)
+                var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+                throw new Exception($"Не удалось создать админа: {errors}");
+            }
+        }
+
+        // 3. Создание Клиентского приложения (OpenIddict)
         var manager = scope.ServiceProvider.GetRequiredService<IOpenIddictApplicationManager>();
 
-        if (await manager.FindByClientIdAsync("balosar-blazor-client") is null)
+        if (await manager.FindByClientIdAsync("postman", cancellationToken) is null)
         {
             await manager.CreateAsync(new OpenIddictApplicationDescriptor
             {
-                ClientId = "balosar-blazor-client",
-                ConsentType = ConsentTypes.Explicit,
-                DisplayName = "Blazor client application",
-                ClientType = ClientTypes.Public,
-                PostLogoutRedirectUris =
-                {
-                    new Uri("https://localhost:44310/authentication/logout-callback")
-                },
-                RedirectUris =
-                {
-                    new Uri("https://localhost:44310/authentication/login-callback")
-                },
+                ClientId = "postman",
+                ClientSecret = "postman-secret",
+                DisplayName = "Postman Client",
                 Permissions =
                 {
-                    Permissions.Endpoints.Authorization,
-                    Permissions.Endpoints.EndSession,
-                    Permissions.Endpoints.Token,
-                    Permissions.GrantTypes.AuthorizationCode,
-                    Permissions.GrantTypes.RefreshToken,
-                    Permissions.ResponseTypes.Code,
-                    Permissions.Scopes.Email,
-                    Permissions.Scopes.Profile,
-                    Permissions.Scopes.Roles
-                },
-                Requirements =
-                {
-                    Requirements.Features.ProofKeyForCodeExchange
+                    OpenIddictConstants.Permissions.Endpoints.Token,
+                    OpenIddictConstants.Permissions.GrantTypes.ClientCredentials,
+                    OpenIddictConstants.Permissions.ResponseTypes.Code
                 }
-            });
+            }, cancellationToken);
         }
-
     }
 
     public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
