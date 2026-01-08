@@ -51,14 +51,14 @@ New-Item -ItemType Directory -Path "Presentation\$($SolutionName).WebApi\Models"
 New-Item -ItemType Directory -Path "Presentation\$($SolutionName).WebApi\Services" -Force
 
 
-dotnet add "Infrastructure\$($SolutionName).Persistence\$($SolutionName).Persistence.csproj" package --framework $framework Microsoft.EntityFrameworkCore.Sqlite
+dotnet add "Infrastructure\$($SolutionName).Persistence\$($SolutionName).Persistence.csproj" package --framework $framework Microsoft.EntityFrameworkCore.Sqlite  --version $pversion
 
 dotnet add "Core\$($SolutionName).Application\$($SolutionName).Application.csproj" package AutoMapper --version 12.0.1  --no-restore
-dotnet add "Core\$($SolutionName).Application\$($SolutionName).Application.csproj" package --framework $framework FluentValidation --no-restore --no-restore
+dotnet add "Core\$($SolutionName).Application\$($SolutionName).Application.csproj" package --framework $framework FluentValidation --no-restore 
 dotnet add "Core\$($SolutionName).Application\$($SolutionName).Application.csproj" package --framework $framework FluentValidation.DependencyInjectionExtensions --no-restore
 dotnet add "Core\$($SolutionName).Application\$($SolutionName).Application.csproj" package MediatR --version 11.1.0 --no-restore
 dotnet add "Core\$($SolutionName).Application\$($SolutionName).Application.csproj" package MediatR.Extensions.Microsoft.DependencyInjection --version 11.1.0 --no-restore
-dotnet add "Core\$($SolutionName).Application\$($SolutionName).Application.csproj" package --framework $framework    Microsoft.EntityFrameworkCore --no-restore
+dotnet add "Core\$($SolutionName).Application\$($SolutionName).Application.csproj" package --framework $framework    Microsoft.EntityFrameworkCore  --version $pversion --no-restore
 dotnet add "Core\$($SolutionName).Application\$($SolutionName).Application.csproj" package --framework $framework    Serilog --no-restore
 dotnet add "Core\$($SolutionName).Application\$($SolutionName).Application.csproj" package --framework $framework    Serilog.Sinks.File --no-restore
 
@@ -68,7 +68,7 @@ dotnet add "Presentation\$($SolutionName).WebApi\$($SolutionName).WebApi.csproj"
 dotnet add "Presentation\$($SolutionName).WebApi\$($SolutionName).WebApi.csproj" package --framework $framework Microsoft.AspNetCore.Mvc.Versioning --no-restore
 dotnet add "Presentation\$($SolutionName).WebApi\$($SolutionName).WebApi.csproj" package --framework $framework Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer --no-restore
 dotnet add "Presentation\$($SolutionName).WebApi\$($SolutionName).WebApi.csproj" package --framework $framework Serilog.AspNetCore --no-restore
-dotnet add "Presentation\$($SolutionName).WebApi\$($SolutionName).WebApi.csproj" package --framework $framework Swashbuckle.AspNetCore --no-restore
+dotnet add "Presentation\$($SolutionName).WebApi\$($SolutionName).WebApi.csproj" package --framework $framework Swashbuckle.AspNetCore --version $pversion --no-restore
 
 $models=  @(
    [PSCustomObject]@{

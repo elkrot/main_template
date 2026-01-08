@@ -6,10 +6,10 @@ $VendorName = "Home"
 
 
 #powershell -ExecutionPolicy Bypass -File "main.ps1" *> $null
-#. ".\backend-core.ps1"
+. ".\backend-core.ps1"
 #. ".\backend-test.ps1"
 #. ".\frontend.ps1"
-. ".\identity.ps1"  -SolutionName $SolutionName -framework $framework -pversion $pversion -VendorName $VendorName
+#. ".\identity.ps1"  -SolutionName $SolutionName -framework $framework -pversion $pversion -VendorName $VendorName
 
 Get-ChildItem * -Include Class1.cs -Recurse | Remove-Item
 Get-ChildItem * -Include UnitTest1.cs -Recurse | Remove-Item
