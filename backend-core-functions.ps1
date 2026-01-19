@@ -960,11 +960,13 @@ using System.Security.Claims;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
+using OpenIddict.Validation.AspNetCore;
 
 namespace $($SolutionName).WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]/[action]")]
+	[Authorize(AuthenticationSchemes = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)]
     public abstract class BaseController : ControllerBase
     {
         private IMediator _mediator;
@@ -974,6 +976,24 @@ namespace $($SolutionName).WebApi.Controllers
         internal Guid UserId => !User.Identity.IsAuthenticated
             ? Guid.Empty
             : Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+			
+			
+			
+			[HttpGet]
+        public IActionResult GetSecretData()
+        {
+            // Получаем ID пользователя или ClientID из токена
+            var user = User.Identity?.Name ?? User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var clientId = User.FindFirst("client_id")?.Value;
+
+            return Ok(new 
+            { 
+                Message = "Доступ разрешен! Это защищенные данные.", 
+                User = user,
+                ClientId = clientId,
+                Time = DateTime.Now 
+            });
+        }
     }
 }
 
@@ -1356,6 +1376,8 @@ using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using System.Reflection;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using OpenIddict.Validation.AspNetCore;
+
 using $($SolutionName).Application;
 using $($SolutionName).Application.Common.Mappings;
 using $($SolutionName).Application.Interfaces;
@@ -1392,7 +1414,30 @@ namespace $($SolutionName).WebApi
                     policy.AllowAnyOrigin();
                 });
             });
+/*
 
+var authServerUrl = "https://localhost:7001"; 
+
+builder.Services.AddOpenIddict()
+    .AddValidation(options =>
+    {
+        // Указываем, кто выдал токен (Issuer)
+        options.SetIssuer(authServerUrl);
+
+        // Указываем, для кого предназначен токен (Audience).
+        // Если ваш Auth Server выдает токен с полем "aud": "my-api", раскомментируйте:
+        // options.AddAudiences("my-api");
+
+        // Использовать системный HTTP клиент для загрузки ключей (discovery document)
+        options.UseSystemNetHttp();
+
+        // Интеграция с ASP.NET Core
+        options.UseAspNetCore();
+    });
+	
+	builder.Services.AddAuthentication(OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme);
+
+*/
             services.AddAuthentication(config =>
             {
                 config.DefaultAuthenticateScheme =

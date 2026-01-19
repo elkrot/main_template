@@ -70,6 +70,11 @@ dotnet add "Presentation\$($SolutionName).WebApi\$($SolutionName).WebApi.csproj"
 dotnet add "Presentation\$($SolutionName).WebApi\$($SolutionName).WebApi.csproj" package --framework $framework Serilog.AspNetCore --no-restore
 dotnet add "Presentation\$($SolutionName).WebApi\$($SolutionName).WebApi.csproj" package --framework $framework Swashbuckle.AspNetCore --version $pversion --no-restore
 
+dotnet add "Presentation\$($SolutionName).WebApi\$($SolutionName).WebApi.csproj" package --framework $framework OpenIddict.Validation.AspNetCore --version 7.* --no-restore
+dotnet add "Presentation\$($SolutionName).WebApi\$($SolutionName).WebApi.csproj" package --framework $framework OpenIddict.Validation.SystemNetHttp --version 7.* --no-restore
+
+
+
 $models=  @(
    [PSCustomObject]@{
     ModelName = "Order"
